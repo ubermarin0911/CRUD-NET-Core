@@ -9,5 +9,6 @@ namespace app.api.Entities
     {
         public string NombreCompleto { get; set; }
         public bool Estado { get; set; }
+
     }
 }
