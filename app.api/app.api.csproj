@@ -6,6 +6,12 @@
 
   <ItemGroup>
     <Folder Include="Controllers\" />
+    <Folder Include="Interfaces\" />
+    <Folder Include="Dtos\" />
+    <Folder Include="Errors\" />
+    <Folder Include="Extensions\" />
+    <Folder Include="Data\" />
+    <Folder Include="Services\" />
   </ItemGroup>
 
 
