@@ -46,9 +46,7 @@ namespace app.api.Services
 
         public async Task<IReadOnlyList<Cliente>> GetClientesAsync()
         {
-            var clientes = await _unitOfWork.Repository<Cliente>().ListAllAsync();
-
-            return clientes;
+            return await _unitOfWork.Repository<Cliente>().ListAllAsync();
         }
     }
 }
