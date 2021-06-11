@@ -37,8 +37,9 @@ namespace app.api.Services
             return await _unitOfWork.Repository<Cliente>().GetByIdAsync(cliente.Id);
         }
 
-        public async Task EliminarClienteAsync(Cliente cliente)
+        public async Task EliminarClienteAsync(int id)
         {
+            Cliente cliente = await _unitOfWork.Repository<Cliente>().GetByIdAsync(id);
             _unitOfWork.Repository<Cliente>().Delete(cliente);
              
              await _unitOfWork.Complete();

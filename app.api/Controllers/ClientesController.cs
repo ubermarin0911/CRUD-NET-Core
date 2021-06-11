@@ -3,9 +3,7 @@ using app.api.Entities;
 using app.api.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace app.api.Controllers
@@ -22,41 +20,39 @@ namespace app.api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IReadOnlyList<ClienteDatosDto>>> GetClientes()
+        public async Task<ActionResult<IReadOnlyList<ClienteDto>>> GetClientes()
         {
             var clientes = await _clienteService.GetClientesAsync();
 
-            var data = _mapper.Map<IReadOnlyList<Cliente>, IReadOnlyList<ClienteDatosDto>>(clientes);
+            var data = _mapper.Map<IReadOnlyList<Cliente>, IReadOnlyList<ClienteDto>>(clientes);
 
             return Ok(data);
         }
 
         [HttpPost]
-        public async Task<ClienteDatosDto> CrearCliente(ClienteDatosDto clienteParam)
+        public async Task<ClienteDto> CrearCliente(ClienteDto clienteParam)
         {
-            var cliente = _mapper.Map<ClienteDatosDto, Cliente>(clienteParam);
+            var cliente = _mapper.Map<ClienteDto, Cliente>(clienteParam);
 
             var clienteCreado = await _clienteService.CrearClienteAsync(cliente);
 
-            return _mapper.Map<Cliente, ClienteDatosDto>(clienteCreado);
+            return _mapper.Map<Cliente, ClienteDto>(clienteCreado);
         }
 
         [HttpPut]
-        public async Task<ClienteDatosDto> EditarCliente(ClienteDto clienteParam)
+        public async Task<ClienteDto> EditarCliente(ClienteDto clienteParam)
         {
             var cliente = _mapper.Map<ClienteDto, Cliente>(clienteParam);
 
             var clienteCreado = await _clienteService.EditarClienteAsync(cliente);
 
-            return _mapper.Map<Cliente, ClienteDatosDto>(clienteCreado);
+            return _mapper.Map<Cliente, ClienteDto>(clienteCreado);
         }
 
-        [HttpDelete]
-        public async Task EliminarCliente(ClienteDto clienteParam)
+        [HttpDelete("{id}")]
+        public async Task EliminarCliente(int id)
         {
-            var cliente = _mapper.Map<ClienteDto, Cliente>(clienteParam);
-
-            await _clienteService.EliminarClienteAsync(cliente);
+            await _clienteService.EliminarClienteAsync(id);
         }
     }
 }
