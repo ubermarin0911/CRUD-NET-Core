@@ -10,7 +10,7 @@ namespace app.api.Interfaces
     {
         Task<Cliente> CrearClienteAsync(Cliente cliente);
         Task<Cliente> EditarClienteAsync(Cliente cliente);
-        Task EliminarClienteAsync(int id);
+        Task<bool> EliminarClienteAsync(int id);
         Task<IReadOnlyList<Cliente>> GetClientesAsync();
     }
 }

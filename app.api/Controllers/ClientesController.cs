@@ -1,5 +1,6 @@
 ﻿using app.api.Dtos;
 using app.api.Entities;
+using app.api.Errors;
 using app.api.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
@@ -30,29 +31,37 @@ namespace app.api.Controllers
         }
 
         [HttpPost]
-        public async Task<ClienteDto> CrearCliente(ClienteDto clienteParam)
+        public async Task<ActionResult<ClienteDto>> CrearCliente(ClienteDto clienteParam)
         {
             var cliente = _mapper.Map<ClienteDto, Cliente>(clienteParam);
 
             var clienteCreado = await _clienteService.CrearClienteAsync(cliente);
 
+            if (clienteCreado == null) return BadRequest(new ApiResponse(400, "No se pudo registrar el cliente."));
+
             return _mapper.Map<Cliente, ClienteDto>(clienteCreado);
         }
 
         [HttpPut]
-        public async Task<ClienteDto> EditarCliente(ClienteDto clienteParam)
+        public async Task<ActionResult<ClienteDto>> EditarCliente(ClienteDto clienteParam)
         {
             var cliente = _mapper.Map<ClienteDto, Cliente>(clienteParam);
 
-            var clienteCreado = await _clienteService.EditarClienteAsync(cliente);
+            var clienteEditado = await _clienteService.EditarClienteAsync(cliente);
 
-            return _mapper.Map<Cliente, ClienteDto>(clienteCreado);
+            if (clienteEditado == null) return BadRequest(new ApiResponse(400, "No se pudo editar el cliente."));
+
+            return _mapper.Map<Cliente, ClienteDto>(clienteEditado);
         }
 
         [HttpDelete("{id}")]
-        public async Task EliminarCliente(int id)
+        public async Task<ActionResult> EliminarCliente(int id)
         {
-            await _clienteService.EliminarClienteAsync(id);
+           var cliente = await _clienteService.EliminarClienteAsync(id);
+
+           if (!cliente) return BadRequest(new ApiResponse(400, "No se pudo borrar el cliente."));
+
+           return NoContent();
         }
     }
 }

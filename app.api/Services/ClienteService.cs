@@ -37,12 +37,19 @@ namespace app.api.Services
             return await _unitOfWork.Repository<Cliente>().GetByIdAsync(cliente.Id);
         }
 
-        public async Task EliminarClienteAsync(int id)
+        public async Task<bool> EliminarClienteAsync(int id)
         {
             Cliente cliente = await _unitOfWork.Repository<Cliente>().GetByIdAsync(id);
+
+            if (cliente == null) return false;
+
             _unitOfWork.Repository<Cliente>().Delete(cliente);
-             
-             await _unitOfWork.Complete();
+
+            var result = await _unitOfWork.Complete();
+
+            if (result <= 0) return false;
+
+            return true;
         }
 
         public async Task<IReadOnlyList<Cliente>> GetClientesAsync()
